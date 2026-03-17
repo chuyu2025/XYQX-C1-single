@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>希音千寻-C1-声学超材料智能设计助手</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      /* 标题样式 */
+      .main-title {
+        text-align: center;
+        margin-bottom: 30px;
+      }
+
+      .title-box {
+        display: inline-block;
+        background: white;
+        padding: 20px 40px;
+        border: 3px solid #4a90e2;
+        border-radius: 15px;
+        box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+      }
+
+      .title-text {
+        font-size: 28px;
+        font-weight: bold;
+        color: #2c3e50;
+        letter-spacing: 2px;
+      }
+
+      /* 导航按钮样式 */
+      .nav-buttons {
+        display: flex;
+        justify-content: center;
+        margin-bottom: 40px;
+        gap: 0;
+      }
+
+      .nav-btn {
+        padding: 15px 30px;
+        font-size: 18px;
+        font-weight: bold;
+        border: 2px solid #4a90e2;
+        background: white;
+        color: #4a90e2;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        border-right: none;
+      }
+
+      .nav-btn:first-child {
+        border-radius: 10px 0 0 10px;
+      }
+
+      .nav-btn:last-child {
+        border-radius: 0 10px 10px 0;
+        border-right: 2px solid #4a90e2;
+      }
+
+      .nav-btn.active,
+      .nav-btn:hover {
+        background: #4a90e2;
+        color: white;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(74, 144, 226, 0.4);
+      }
+
+      /* 内容区域样式 */
+      /* 内容区域布局样式 */
+      .content-area {
+        /* 使用网格布局,将内容区域分为两列 */
+        display: grid;
+        /* 两列宽度相等,各占1份 */
+        grid-template-columns: 1fr 1fr;
+        /* 列间距30px */
+        gap: 30px;
+        /* 底部外边距40px */
+        margin-bottom: 40px;
+      }
+
+      .content-box {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        border-left: 5px solid #4a90e2;
+        transition: transform 0.3s ease;
+      }
+
+      .content-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.15);
+      }
+
+      .content-title {
+        font-size: 24px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 20px;
+        text-align: center;
+        padding-bottom: 10px;
+        border-bottom: 2px solid #eee;
+      }
+
+      .content-text {
+        font-size: 16px;
+        color: #555;
+        line-height: 2;
+        text-align: justify;
+      }
+
+      .highlight {
+        color: #4a90e2;
+        font-weight: bold;
+      }
+
+      /* 右侧内容区域 */
+      .right-content {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .small-box {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+        border-left: 4px solid #e74c3c;
+        transition: transform 0.3s ease;
+      }
+
+      .small-box:hover {
+        transform: translateY(-3px);
+      }
+
+      .small-box:last-child {
+        border-left-color: #27ae60;
+      }
+
+      .small-title {
+        font-size: 20px;
+        font-weight: bold;
+        color: #2c3e50;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .small-text {
+        font-size: 15px;
+        color: #666;
+        line-height: 1.8;
+      }
+
+      /* 底部信息 */
+      .footer-info {
+        background: white;
+        padding: 20px;
+        border-radius: 10px;
+        text-align: center;
+        border: 2px solid #e74c3c;
+        color: #e74c3c;
+        font-size: 14px;
+        margin-top: 30px;
+        box-shadow: 0 4px 15px rgba(231, 76, 60, 0.1);
+      }
+
+      /* 隐藏其他页面内容 */
+      .page-content {
+        display: none;
+      }
+
+      .page-content.active {
+        display: block;
+      }
+
+      /* Help页面专用样式 */
+      #help .content-box {
+        max-height: calc(100vh - 250px);
+        overflow-y: auto;
+      }
+
+      #help .content-text {
+        line-height: 1.8;
+      }
+
+      #help h3 {
+        margin-top: 25px;
+        margin-bottom: 15px;
+        padding-bottom: 8px;
+        border-bottom: 2px solid #f0f0f0;
+      }
+
+      #help h4 {
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      #help code {
+        background: #f8f9fa;
+        padding: 2px 6px;
+        border-radius: 4px;
+        font-family: "Courier New", monospace;
+        color: #e74c3c;
+        border: 1px solid #e9ecef;
+      }
+
+      #help ol,
+      #help ul {
+        margin-left: 20px;
+        margin-bottom: 15px;
+      }
+
+      #help li {
+        margin-bottom: 8px;
+      }
+
+      #help .content-box::-webkit-scrollbar {
+        width: 8px;
+      }
+
+      #help .content-box::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      #help .content-box::-webkit-scrollbar-thumb {
+        background: #c1c1c1;
+        border-radius: 4px;
+      }
+
+      #help .content-box::-webkit-scrollbar-thumb:hover {
+        background: #a8a8a8;
+      }
+
+      /* Design页面样式 */
+      .design-container {
+        max-width: 1000px;
+        margin: 0 auto;
+      }
+
+      .input-section {
+        background: white;
+        padding: 30px;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        border-left: 5px solid #4a90e2;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+        gap: 15px;
+      }
+
+      .input-group:last-child {
+        margin-bottom: 0;
+      }
+
+      .input-label {
+        font-size: 18px;
+        font-weight: bold;
+        color: #2c3e50;
+        min-width: 140px;
+        text-align: right;
+      }
+
+      .input-field {
+        flex: 1;
+        padding: 12px 15px;
+        font-size: 16px;
+        border: 2px solid #ddd;
+        border-radius: 8px;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+
+      .input-field:focus {
+        outline: none;
+        border-color: #4a90e2;
+        background: white;
+        box-shadow: 0 0 10px rgba(74, 144, 226, 0.2);
+      }
+
+      .chat-section {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        margin-bottom: 30px;
+        overflow: hidden;
+        border-left: 5px solid #27ae60;
+      }
+
+      .chat-title {
+        background: #27ae60;
+        color: white;
+        padding: 15px 25px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .chat-container {
+        height: 500px;
+        overflow-y: auto;
+        padding: 20px;
+        background: #f8f9fa;
+      }
+
+      .welcome-message {
+        position: sticky;
+        top: 0;
+        background: #f8f9fa;
+        z-index: 10;
+        padding: 15px 0;
+        border-bottom: 2px solid #e0e0e0;
+        margin-bottom: 15px;
+        text-align: center;
+      }
+
+      .welcome-message .message {
+        margin: 0;
+        position: relative;
+      }
+
+      .chat-messages {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        padding-top: 0;
+      }
+
+      .message {
+        max-width: 80%;
+        padding: 15px 20px;
+        border-radius: 18px;
+        line-height: 1.5;
+        position: relative;
+      }
+
+      .system-message {
+        align-self: flex-start;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+      }
+
+      .user-message {
+        align-self: flex-end;
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+        color: white;
+      }
+
+      .assistant-message {
+        align-self: flex-start;
+        background: white;
+        color: #333;
+        border: 2px solid #e0e0e0;
+      }
+
+      .message-content {
+        word-wrap: break-word;
+      }
+
+      .run-section {
+        text-align: center;
+        margin-bottom: 40px;
+      }
+
+      .run-button {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        padding: 18px 40px;
+        font-size: 20px;
+        font-weight: bold;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0 auto;
+      }
+
+      .run-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 12px 35px rgba(102, 126, 234, 0.6);
+      }
+
+      .run-button:active {
+        transform: translateY(-1px);
+      }
+
+      .run-icon {
+        font-size: 22px;
+      }
+
+      /* 加载动画 */
+      .run-button.loading {
+        background: #95a5a6;
+        cursor: not-allowed;
+      }
+
+      .run-button.loading .run-icon {
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        from {
+          transform: rotate(0deg);
+        }
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      /* 响应式设计 */
+      @media (max-width: 768px) {
+        .content-area {
+          grid-template-columns: 1fr;
+        }
+
+        .nav-buttons {
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .nav-btn {
+          border-radius: 8px !important;
+          border: 2px solid #4a90e2 !important;
+        }
+
+        .title-text {
+          font-size: 22px;
+        }
+
+        .title-box {
+          padding: 15px 25px;
+        }
+
+        .input-group {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 8px;
+        }
+
+        .input-label {
+          text-align: left;
+          min-width: auto;
+        }
+
+        .chat-container {
+          height: 300px;
+        }
+
+        .message {
+          max-width: 95%;
+        }
+      }
+
+      /* 文件显示样式 */
+      .file-section {
+        margin-top: 20px;
+        padding: 15px;
+        background: #f8f9fa;
+        border-radius: 10px;
+        border-left: 4px solid #17a2b8;
+      }
+
+      .file-title {
+        font-weight: bold;
+        color: #17a2b8;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .file-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+      }
+
+      /* 四宫格图像布局 */
+      .images-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 15px;
+        margin-bottom: 15px;
+      }
+
+      .image-item {
+        background: white;
+        border-radius: 8px;
+        padding: 5px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid #e9ecef;
+      }
+
+      .image-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 6px;
+        margin-bottom: 8px;
+      }
+
+      .image-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: #495057;
+        text-align: center;
+        margin-bottom: 5px;
+      }
+
+      .image-info {
+        font-size: 11px;
+        color: #6c757d;
+        text-align: center;
+      }
+
+      .file-text {
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 14px;
+        color: #333;
+        white-space: pre-wrap;
+        max-height: 200px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+      }
+
+      .download-buttons {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .download-btn {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        font-size: 14px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      .download-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 12px rgba(23, 162, 184, 0.3);
+      }
+
+      .file-info {
+        font-size: 12px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      /* Chat页面专用样式 */
+      .chat-page-container {
+        max-width: 1100px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+        height: calc(100vh - 250px);
+      }
+
+      .chat-display-section {
+        flex: 1;
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        overflow: hidden;
+        border-left: 5px solid #27ae60;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .chat-display-title {
+        background: linear-gradient(135deg, #27ae60 0%, #2ecc71 100%);
+        color: white;
+        padding: 15px 25px;
+        font-size: 20px;
+        font-weight: bold;
+        text-align: center;
+      }
+
+      .chat-display-container {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+      }
+
+      .chat-display-messages {
+        flex: 1;
+        overflow-y: auto;
+        padding: 20px;
+        background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .chat-input-section {
+        background: white;
+        border-radius: 15px;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+        padding: 25px;
+        border-left: 5px solid #4a90e2;
+      }
+
+      .chat-input-container {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .chat-input-field {
+        width: 100%;
+        padding: 15px 20px;
+        font-size: 16px;
+        border: 2px solid #e0e0e0;
+        border-radius: 10px;
+        resize: vertical;
+        min-height: 80px;
+        font-family: "Microsoft YaHei", "微软雅黑", Arial, sans-serif;
+        transition: all 0.3s ease;
+        background: #f8f9fa;
+      }
+
+      .chat-input-field:focus {
+        outline: none;
+        border-color: #4a90e2;
+        background: white;
+        box-shadow: 0 0 15px rgba(74, 144, 226, 0.2);
+      }
+
+      .chat-buttons {
+        display: flex;
+        gap: 15px;
+        justify-content: center;
+      }
+
+      .chat-btn {
+        padding: 12px 30px;
+        font-size: 16px;
+        font-weight: bold;
+        border: none;
+        border-radius: 25px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .send-btn {
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+        color: white;
+      }
+
+      .send-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(74, 144, 226, 0.4);
+      }
+
+      .send-btn:disabled {
+        background: #95a5a6;
+        cursor: not-allowed;
+        transform: none;
+      }
+
+      .reset-btn {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+      }
+
+      .reset-btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
+      }
+
+      .btn-icon {
+        font-size: 18px;
+      }
+
+      /* Chat消息样式优化 */
+      .chat-display-messages .message {
+        max-width: 85%;
+        padding: 18px 22px;
+        border-radius: 20px;
+        line-height: 1.6;
+        position: relative;
+        word-wrap: break-word;
+        animation: fadeInUp 0.4s ease-out;
+      }
+
+      .chat-display-messages .user-message {
+        align-self: flex-end;
+        background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%);
+        color: white;
+        margin-left: auto;
+      }
+
+      .chat-display-messages .assistant-message {
+        align-self: flex-start;
+        background: white;
+        color: #333;
+        border: 2px solid #e0e0e0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+      }
+
+      .chat-display-messages .initial-message {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        color: white;
+        border: none;
+        box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        max-width: 95%;
+        align-self: center;
+        text-align: center;
+      }
+
+      /* 加载动画 */
+      .chat-btn.loading {
+        background: #95a5a6 !important;
+        cursor: not-allowed;
+      }
+
+      .chat-btn.loading .btn-icon {
+        animation: spin 1s linear infinite;
+      }
+
+      .typing-indicator {
+        align-self: flex-start;
+        background: white;
+        border: 2px solid #e0e0e0;
+        padding: 15px 20px;
+        border-radius: 20px;
+        max-width: 85%;
+      }
+
+      .typing-dots {
+        display: flex;
+        gap: 4px;
+        align-items: center;
+      }
+
+      .typing-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #4a90e2;
+        animation: typing 1.4s infinite;
+      }
+
+      .typing-dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .typing-dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes typing {
+        0%,
+        60%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        30% {
+          transform: translateY(-10px);
+          opacity: 1;
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* Chat页面文件显示样式 */
+      .chat-display-messages .file-section {
+        margin-top: 15px;
+        padding: 15px;
+        background: rgba(248, 249, 250, 0.8);
+        border-radius: 10px;
+        border-left: 4px solid #17a2b8;
+      }
+
+      .chat-display-messages .file-title {
+        font-weight: bold;
+        color: #17a2b8;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .chat-display-messages .file-image {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin-bottom: 10px;
+      }
+
+      /* Chat页面四宫格图像布局 */
+      .chat-display-messages .images-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: 1fr 1fr;
+        gap: 12px;
+        margin-bottom: 12px;
+      }
+
+      .chat-display-messages .image-item {
+        background: rgba(255, 255, 255, 0.9);
+        border-radius: 6px;
+        padding: 4px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border: 1px solid rgba(233, 236, 239, 0.5);
+      }
+
+      .chat-display-messages .image-item img {
+        width: 100%;
+        height: auto;
+        border-radius: 4px;
+        margin-bottom: 6px;
+      }
+
+      .chat-display-messages .image-title {
+        font-size: 11px;
+        font-weight: bold;
+        color: #495057;
+        text-align: center;
+        margin-bottom: 4px;
+      }
+
+      .chat-display-messages .image-info {
+        font-size: 10px;
+        color: #6c757d;
+        text-align: center;
+      }
+
+      .chat-display-messages .file-text {
+        background: white;
+        padding: 12px;
+        border-radius: 8px;
+        font-family: "Courier New", monospace;
+        font-size: 13px;
+        color: #333;
+        white-space: pre-wrap;
+        max-height: 150px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        margin-bottom: 10px;
+      }
+
+      .chat-display-messages .download-buttons {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .chat-display-messages .download-btn {
+        background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 15px;
+        cursor: pointer;
+        font-size: 13px;
+        font-weight: 500;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .chat-display-messages .download-btn:hover {
+        transform: translateY(-1px);
+        box-shadow: 0 3px 8px rgba(23, 162, 184, 0.3);
+      }
+
+      .chat-display-messages .file-info {
+        font-size: 11px;
+        color: #666;
+        margin-top: 5px;
+      }
+
+      /* 响应式设计 - Chat页面 */
+      @media (max-width: 768px) {
+        /* 这段CSS代码定义了聊天页面容器的样式:
+             * 1. height: calc(100vh - 200px) 设置容器高度为视窗高度减去200px
+             *    - 100vh表示整个视窗的高度
+             *    - 减去200px是为了给页面其他元素(如标题、导航栏等)预留空间
+             * 2. gap: 15px 设置容器内部元素之间的间距为15px
+             * 这些样式在移动设备上(max-width: 768px)时生效,用于优化移动端显示效果
+             */
+        .chat-page-container {
+          height: calc(100vh - 200px);
+          gap: 15px;
+        }
+
+        .chat-buttons {
+          flex-direction: column;
+          gap: 10px;
+        }
+
+        .chat-btn {
+          width: 100%;
+          justify-content: center;
+        }
+
+        .chat-display-messages .message {
+          max-width: 95%;
+        }
+
+        .chat-input-field {
+          min-height: 60px;
+        }
+
+        .chat-display-messages .file-text {
+          max-height: 120px;
+          font-size: 12px;
+        }
+
+        .chat-display-messages .download-buttons {
+          justify-content: center;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- 主标题 -->
+      <div class="main-title">
+        <div class="title-box">
+          <div class="title-text">希音千寻-声学超材料智能设计助手</div>
+        </div>
+      </div>
+
+      <!-- 导航按钮 -->
+      <div class="nav-buttons">
+        <button class="nav-btn active" onclick="showPage('home')">Home</button>
+        <button class="nav-btn" onclick="showPage('design')">
+          Design-AVHI
+        </button>
+        <button class="nav-btn" onclick="showPage('chat')">Chat</button>
+        <button class="nav-btn" onclick="showPage('help')">Help</button>
+      </div>
+
+      <!-- Home页面内容 -->
+      <div id="home" class="page-content active">
+        <div class="content-area">
+          <!-- 左侧介绍区域 -->
+          <div class="content-box">
+            <div class="content-title">介绍</div>
+            <div class="content-text">
+              该网站内置一个基于大语言模型的<span class="highlight"
+                >声学超材料智能化设计助手</span
+              >，目前包含以下功能：<br /><br />
+              1.根据用户提供的拓扑带隙范围逆向设计<span class="highlight"
+                >声谷霍尔绝缘体(AVHI)</span
+              >单胞。<br /><br />
+              2.回答用户有关声学的相关问题。<br /><br />
+              点击<span class="highlight">Design-AVHI</span
+              >按钮进入AVHI的设计专用页面。<br /><br />
+              点击<span class="highlight">Chat</span
+              >按钮可以与Agent进行对话模式的设计。<br /><br />
+              详细的使用方法请参考<span class="highlight">Help</span>文档。
+            </div>
+          </div>
+
+          <!-- 右侧内容区域 -->
+          <div class="right-content">
+            <div class="small-box">
+              <div class="small-title">AVHI</div>
+              <div class="small-text">
+                <span class="highlight">声谷霍尔绝缘体(AVHI)</span
+                >源于凝聚态物理学中拓扑能带理论在声学中的延伸和演变，具备受拓扑保护的边缘态，
+                在特定的条件下能够激发<span
+                  class="highlight"
+                  >谷霍尔效应</span
+                >， 从而展现出高效的<span class="highlight">声波控制能力</span
+                >。
+                这一特性使声谷霍尔绝缘体在声学通信、声电集成、声源定位等领域有重要的应用潜力。
+              </div>
+            </div>
+
+            <div class="small-box">
+              <div class="small-title">LLM训练数据来源</div>
+              <div class="small-text">
+                LLM的<span class="highlight">监督微调</span
+                >训练数据来源于一种基于<span class="highlight">强化学习</span
+                >的声谷霍尔绝缘体优化设计方法，
+                相较于以往的优化算法该方法主要有以下两点优势：<br /><br />
+                1.强化学习通过<span class="highlight">探索式的设计</span
+                >能够得到更多样化的设计结果，
+                有利于谷霍尔绝缘体模型库的构建，并提供使用者更大的选择自由度。<br /><br />
+                2.在模型学到合理设计经验的基础上，随着模型训练轮数的不断增加，
+                理论上可以不断突破当前已知的<span class="highlight"
+                  >设计上限</span
+                >。
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 底部作者信息 -->
+        <div class="footer-info">
+          目前该项目正处于测试阶段并非正式发布版本，后端服务部署在一台小型服务器上，可能出现访问延迟。<br /><br />
+        </div>
+      </div>
+
+      <!-- Design页面内容 -->
+      <div id="design" class="page-content">
+        <div class="design-container">
+          <!-- 输入参数区域 -->
+          <div class="input-section">
+            <div class="input-group">
+              <label for="bandgap1" class="input-label">第一带隙(Hz):</label>
+              <input
+                type="number"
+                id="bandgap1"
+                class="input-field"
+                placeholder="请输入第一带隙频率"
+              />
+            </div>
+            <div class="input-group">
+              <label for="bandgap2" class="input-label">第二带隙(Hz):</label>
+              <input
+                type="number"
+                id="bandgap2"
+                class="input-field"
+                placeholder="请输入第二带隙频率"
+              />
+            </div>
+          </div>
+
+          <!-- 对话交互区域 -->
+          <div class="chat-section">
+            <div class="chat-title">💬 对话交互</div>
+            <div class="chat-container">
+              <div class="chat-messages" id="chatMessages">
+                <div class="welcome-message">
+                  <div class="message system-message">
+                    <div class="message-content">
+                      欢迎使用声学超材料智能设计助手！请在上方输入您想要的拓扑带隙范围，比如：第一带隙(Hz):1000，第二带隙(Hz):4000，然后点击Run按钮开始设计。
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 运行按钮 -->
+          <div class="run-section">
+            <button class="run-button" onclick="runDesign()">
+              <span class="run-icon">⚙️</span>
+              Run
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chat页面内容 -->
+      <div id="chat" class="page-content">
+        <div class="chat-page-container">
+          <!-- 对话显示区域 -->
+          <div class="chat-display-section">
+            <div class="chat-display-title">💬 对话交互</div>
+            <div class="chat-display-container">
+              <div class="chat-display-messages" id="chatDisplayMessages">
+                <div class="initial-message assistant-message">
+                  <div class="message-content">
+                    你好呀，我叫希音千寻，是一个声学超材料智能化设计助手，目前擅长声谷霍尔绝缘体的设计，
+                    你可以向我询问比如"请帮我设计一个声谷霍尔绝缘体，带隙范围为（811,1998）"。或者你可以与我讨论声学超材料有关的问题。
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 输入区域 -->
+          <div class="chat-input-section">
+            <div class="chat-input-container">
+              <textarea
+                id="chatInput"
+                class="chat-input-field"
+                placeholder="请输入您的问题或需求..."
+                rows="3"
+              ></textarea>
+              <div class="chat-buttons">
+                <button class="chat-btn send-btn" onclick="sendMessage()">
+                  <span class="btn-icon">📤</span>
+                  Send
+                </button>
+                <button
+                  class="chat-btn reset-btn"
+                  onclick="startNewConversation()"
+                >
+                  <span class="btn-icon">🔄</span>
+                  Start a new conversation
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="help" class="page-content">
+        <div class="content-box">
+          <div class="content-title">📖 使用指南</div>
+          <div class="content-text">
+            <h3 style="color: #4a90e2; margin-top: 0">🎯 项目简介</h3>
+            <p>
+              <strong>希音千寻</strong>是一个基于大语言模型的<strong
+                >AI Agent</strong
+              >助手，
+              目前擅长<strong>声谷霍尔绝缘体(AVHI)</strong>的设计，后续还会继续拓展其他声学超材料的设计。
+            </p>
+
+            <h3 style="color: #4a90e2">🚀 快速使用</h3>
+            <ol>
+              <li>
+                <strong>web开发框架：</strong>基于python Flask开发前端web界面
+              </li>
+              <li>
+                <strong>公网映射：</strong>局域网地址：
+                <code>http://localhost:5000</code>公网地址：
+              </li>
+              <li>
+                <strong>选择功能：</strong>点击导航栏中的按钮切换不同功能页面
+              </li>
+              <li><strong>开始设计：</strong>输入参数或发送消息即可开始使用</li>
+            </ol>
+
+            <h3 style="color: #4a90e2">🔧 功能说明</h3>
+
+            <h4 style="color: #e74c3c">📋 Home 页面</h4>
+            <ul>
+              <li>展示项目介绍和基本信息</li>
+              <li>AVHI（声谷霍尔绝缘体）的相关知识</li>
+              <li>查看训练数据来源和方法优势</li>
+            </ul>
+
+            <h4 style="color: #e74c3c">🎨 Design-AVHI 页面</h4>
+            <p><strong>专用于声谷霍尔绝缘体的参数化设计：</strong></p>
+            <ol>
+              <li>
+                <strong>输入目标设计参数：</strong>
+                <ul>
+                  <li>第一带隙(Hz)：输入目标第一拓扑带隙频率</li>
+                  <li>第二带隙(Hz)：输入目标第二拓扑带隙频率</li>
+                  <li>⚠️ 注意：第一带隙必须小于第二带隙</li>
+                </ul>
+              </li>
+              <li><strong>点击Run：</strong>系统开始设计并显示过程</li>
+              <li>
+                <strong>查看结果：</strong>
+                <ul>
+                  <li>设计参数对比（目标 vs 实际）</li>
+                  <li>晶格常数信息</li>
+                  <li>结构图像（PNG格式）</li>
+                  <li>数据文件（TXT格式）</li>
+                </ul>
+              </li>
+              <li><strong>下载文件：</strong>点击下载按钮保存结果文件</li>
+            </ol>
+
+            <h4 style="color: #e74c3c">💬 Chat 页面</h4>
+            <p><strong>对话式智能设计和问答：</strong></p>
+            <ol>
+              <li>
+                <strong>自然语言交互：</strong>
+                <ul>
+                  <li>可以用自然语言描述设计需求</li>
+                  <li>
+                    例如："请帮我设计一个声谷霍尔绝缘体，拓扑带隙范围为(1000,4000)"
+                  </li>
+                </ul>
+              </li>
+              <li>
+                <strong>支持的交互方式：</strong>
+                <ul>
+                  <li>AVHI设计请求</li>
+                  <li>声学相关问题咨询</li>
+                  <li>技术参数讨论</li>
+                </ul>
+              </li>
+              <li>
+                <strong>操作说明：</strong>
+                <ul>
+                  <li>在文本框中输入消息</li>
+                  <li>按Enter键或点击Send发送</li>
+                  <li>点击"Start a new conversation"重新开始对话</li>
+                </ul>
+              </li>
+            </ol>
+
+            <h3 style="color: #4a90e2">📝 使用示例</h3>
+
+            <h4 style="color: #27ae60">Design-AVHI 页面示例：</h4>
+            <div
+              style="
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 10px 0;
+                border-left: 4px solid #27ae60;
+              "
+            >
+              <p><strong>输入：</strong></p>
+              <p>第一带隙(Hz): 1000</p>
+              <p>第二带隙(Hz): 4000</p>
+              <p><strong>输出：</strong></p>
+              <p>
+                设计完成了。用户目标拓扑带隙(1000,
+                4000)，实际设计的拓扑带隙(1050, 3950)……。
+              </p>
+            </div>
+
+            <h4 style="color: #27ae60">Chat 页面示例：</h4>
+            <div
+              style="
+                background: #f8f9fa;
+                padding: 15px;
+                border-radius: 8px;
+                margin: 10px 0;
+                border-left: 4px solid #27ae60;
+              "
+            >
+              <p><strong>用户：</strong>"请设计带隙范围为(500, 3000)的AVHI"</p>
+              <p>
+                <strong>助手：</strong
+                >"知道了，我来设计这个拓扑带隙为(500,3000)的声谷霍尔绝缘体..."
+              </p>
+              <p><strong>用户：</strong>"什么是声谷霍尔绝缘体？"</p>
+              <p>
+                <strong>助手：</strong
+                >"声谷霍尔绝缘体(AVHI)源于凝聚态物理学中拓扑能带理论..."
+              </p>
+            </div>
+
+            <h3 style="color: #4a90e2">❓ 常见问题</h3>
+
+            <div style="margin: 15px 0">
+              <h4 style="color: #e74c3c">Q: 为什么输入参数后没有反应？</h4>
+              <p><strong>A:</strong> 请检查：</p>
+              <ul>
+                <li>确保两个带隙参数都已输入</li>
+                <li>确保第一带隙小于第二带隙</li>
+                <li>检查网络连接是否正常</li>
+                <li>查看浏览器控制台是否有错误信息</li>
+              </ul>
+            </div>
+
+            <div style="margin: 15px 0">
+              <h4 style="color: #e74c3c">Q: 设计失败怎么办？</h4>
+              <p><strong>A:</strong> 可能的原因和解决方案：</p>
+              <ul>
+                <li>
+                  <strong>参数超出范围：</strong>尝试调整带隙参数到合理范围
+                </li>
+                <li>
+                  <strong>数据库中无匹配：</strong
+                  >系统会提示"找不到对应结构"，请尝试其他参数
+                </li>
+                <li><strong>网络问题：</strong>检查API连接和网络状态</li>
+              </ul>
+            </div>
+
+            <div style="margin: 15px 0">
+              <h4 style="color: #e74c3c">Q: 如何下载生成的文件？</h4>
+              <p><strong>A:</strong> 设计成功后，会在结果区域显示下载按钮：</p>
+              <ul>
+                <li>点击"📥 下载图像"一次性下载所有结构图像(PNG)</li>
+                <li>点击"📥 下载数据"保存结构数据(TXT)</li>
+                <li>点击"🔧 下载STL"保存3D打印文件</li>
+                <li>点击"🔬 Comsol模型"保存仿真模型文件</li>
+                <li>文件会自动保存到浏览器默认下载目录</li>
+              </ul>
+            </div>
+
+            <div style="margin: 15px 0">
+              <h4 style="color: #e74c3c">Q: Chat模式下如何重新开始对话？</h4>
+              <p>
+                <strong>A:</strong> 点击"Start a new
+                conversation"按钮可以清空对话历史，重新开始对话。
+              </p>
+            </div>
+
+            <h3 style="color: #4a90e2">⚡ 使用技巧</h3>
+            <ul>
+              <li>
+                <strong>参数选择：</strong>建议带隙范围在100-10000
+                Hz之间，间隔不要过小
+              </li>
+              <li>
+                <strong>Chat交互：</strong
+                >描述需求时尽量具体，包含明确的数值参数
+              </li>
+              <li>
+                <strong>文件管理：</strong>及时下载和保存设计结果，避免数据丢失
+              </li>
+              <li>
+                <strong>多次尝试：</strong
+                >如果一次设计不满意，可以调整参数重新设计
+              </li>
+              <li>
+                <strong>快捷操作：</strong>Chat页面支持Enter键快速发送消息
+              </li>
+            </ul>
+
+            <h3 style="color: #4a90e2">🔧 技术支持</h3>
+            <div
+              style="
+                background: #fff3cd;
+                padding: 15px;
+                border-radius: 8px;
+                border-left: 4px solid #ffc107;
+              "
+            >
+              <p><strong>开发团队：</strong>华中科技大学</p>
+              <p><strong>开发者：</strong>2023级博士生 王寅初</p>
+              <p><strong>联系邮箱：</strong>wangyinchu@hust.edu.cn</p>
+              <p>
+                <strong>技术说明：</strong
+                >该项目所用的主要方法与技术包含：强化学习、基于LORA的监督微调、基于大语言模型的AI
+                Agent构建等。
+              </p>
+            </div>
+
+            <h3 style="color: #4a90e2">📋 系统要求</h3>
+            <ul>
+              <li>
+                <strong>浏览器：</strong>Chrome、Firefox、Edge等现代浏览器
+              </li>
+              <li>
+                <strong>分辨率：</strong>建议1280x720以上分辨率，支持移动端访问
+              </li>
+              <li><strong>JavaScript：</strong>请确保浏览器已启用JavaScript</li>
+            </ul>
+
+            <div
+              style="
+                background: #d4edda;
+                padding: 15px;
+                border-radius: 8px;
+                margin-top: 20px;
+                border-left: 4px solid #28a745;
+              "
+            >
+              <p>
+                <strong>🎉 开始探索：</strong
+                >现在您已经了解了如何使用希音千寻-C1，点击导航栏中的按钮开始您的声学超材料设计之旅吧！
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      function showPage(pageId) {
+        // 隐藏所有页面内容
+        const allPages = document.querySelectorAll(".page-content");
+        allPages.forEach((page) => page.classList.remove("active"));
+
+        // 显示选中的页面
+        document.getElementById(pageId).classList.add("active");
+
+        // 更新按钮状态
+        const allButtons = document.querySelectorAll(".nav-btn");
+        allButtons.forEach((btn) => btn.classList.remove("active"));
+
+        // 根据页面ID找到对应的按钮并激活
+        const buttonTexts = {
+          home: "Home",
+          design: "Design-AVHI",
+          chat: "Chat",
+          help: "Help",
+        };
+
+        allButtons.forEach((btn) => {
+          if (btn.textContent === buttonTexts[pageId]) {
+            btn.classList.add("active");
+          }
+        });
+
+        // 如果切换到Chat页面，初始化输入框事件
+        if (pageId === "chat") {
+          setTimeout(initializeChatInput, 100);
+        }
+      }
+
+      // 添加消息到聊天区域
+      function addMessage(content, type, files = null) {
+        const chatMessages = document.getElementById("chatMessages");
+        const messageDiv = document.createElement("div");
+
+        // 不再清除欢迎信息，保持置顶显示
+
+        messageDiv.className = `message ${type}-message`;
+
+        let messageContent = `<div class="message-content">${content.replace(
+          /\n/g,
+          "<br>"
+        )}</div>`;
+
+        // 如果有文件数据，添加文件显示区域
+        if (files && files.has_files) {
+          messageContent += '<div class="file-section">';
+
+          // 显示四个图片文件（四宫格布局）
+          if (files.images) {
+            messageContent += `
+                        <div class="file-title">
+                            🖼️ 设计结果图像
+                        </div>
+                        <div class="images-grid">
+                    `;
+
+            // 定义图像配置：位置 -> (key, title)
+            const imageConfig = {
+              'structure': { key: 'structure', title: '三维结构图' },
+              'band_gap': { key: 'band_gap', title: '带隙图' },
+              'first_band': { key: 'first_band', title: '第一带隙本征模态图' },
+              'second_band': { key: 'second_band', title: '第二带隙本征模态图' }
+            };
+
+            // 按照指定顺序显示图像
+            ['structure', 'band_gap', 'first_band', 'second_band'].forEach(pos => {
+              const config = imageConfig[pos];
+              const imageData = files.images[config.key];
+
+              if (imageData) {
+                messageContent += `
+                          <div class="image-item">
+                            <div class="image-title">${config.title}</div>
+                            <img src="${imageData.data}" alt="${config.title}" class="file-image">
+                            <div class="image-info">${imageData.filename} (${formatBytes(imageData.size)})</div>
+                          </div>
+                        `;
+              } else {
+                messageContent += `
+                          <div class="image-item">
+                            <div class="image-title">${config.title}</div>
+                            <div style="height: 120px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 12px; background: #f8f9fa; border-radius: 4px;">
+                              暂无图像
+                            </div>
+                          </div>
+                        `;
+              }
+            });
+
+            messageContent += '</div>'; // 结束images-grid
+          }
+
+          // 文本文件内容已隐藏，只保留下载按钮
+
+          // STL文件内容已隐藏，只保留下载按钮
+
+          // 下载按钮
+          messageContent += '<div class="download-buttons">';
+          // 下载所有图像按钮
+          if (files.images) {
+            const imageList = [];
+            ['structure', 'band_gap', 'first_band', 'second_band'].forEach(pos => {
+              const imageData = files.images[pos];
+              if (imageData) {
+                imageList.push(imageData.filename);
+              }
+            });
+            if (imageList.length > 0) {
+              messageContent += `<button class="download-btn" onclick="downloadAllImages(${JSON.stringify(imageList).replace(/"/g, '&quot;')})">📥 下载图像</button>`;
+            }
+          }
+          if (files.text) {
+            messageContent += `<a href="/api/download/${files.text.filename}" class="download-btn" target="_blank">📥 下载数据</a>`;
+          }
+          if (files.stl) {
+            messageContent += `<a href="/api/download/${files.stl.filename}" class="download-btn" target="_blank">🔧 下载STL</a>`;
+          }
+          if (files.comsol) {
+            messageContent += `<a href="/api/download/${files.comsol.filename}" class="download-btn" target="_blank">🔬 Comsol模型</a>`;
+          }
+          messageContent += "</div>";
+          messageContent += "</div>";
+        }
+
+        messageDiv.innerHTML = messageContent;
+        chatMessages.appendChild(messageDiv);
+
+        // 滚动到底部
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // 格式化字节大小
+      function formatBytes(bytes, decimals = 2) {
+        if (bytes === 0) return "0 Bytes";
+        const k = 1024;
+        const dm = decimals < 0 ? 0 : decimals;
+        const sizes = ["Bytes", "KB", "MB", "GB"];
+        const i = Math.floor(Math.log(bytes) / Math.log(k));
+        return (
+          parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
+        );
+      }
+
+      // Run按钮功能
+      function runDesign() {
+        const bandgap1 = document.getElementById("bandgap1").value;
+        const bandgap2 = document.getElementById("bandgap2").value;
+        const runButton = document.querySelector(".run-button");
+
+        // 验证输入
+        if (!bandgap1 || !bandgap2) {
+          addMessage("请输入完整的带隙参数！", "system");
+          return;
+        }
+
+        // 设置按钮为加载状态
+        runButton.classList.add("loading");
+        runButton.innerHTML = '<span class="run-icon">⚙️</span>处理中...';
+
+        // 调用后端API
+        fetch("/api/design", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            bandgap1: bandgap1,
+            bandgap2: bandgap2,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // 添加用户输入消息
+              if (data.user_input) {
+                addMessage(data.user_input, "user");
+              }
+
+              // 添加AI回复，包含文件数据
+              addMessage(data.message, "assistant", data.files);
+            } else {
+              // 显示错误消息
+              addMessage(data.message, "system");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            addMessage(
+              "连接服务器时出现错误，请检查网络连接或重启程序。",
+              "system"
+            );
+          })
+          .finally(() => {
+            // 恢复按钮状态
+            runButton.classList.remove("loading");
+            runButton.innerHTML = '<span class="run-icon">⚙️</span>Run';
+          });
+      }
+
+      // Chat页面专用函数
+      function addChatMessage(content, type, files = null) {
+        const chatMessages = document.getElementById("chatDisplayMessages");
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${type}-message`;
+
+        let messageContent = `<div class="message-content">${content.replace(
+          /\n/g,
+          "<br>"
+        )}</div>`;
+
+        // 如果有文件数据，添加文件显示区域
+        if (files && files.has_files) {
+          messageContent += '<div class="file-section">';
+
+          // 显示四个图片文件（四宫格布局）
+          if (files.images) {
+            messageContent += `
+                        <div class="file-title">
+                            🖼️ 设计结果图像
+                        </div>
+                        <div class="images-grid">
+                    `;
+
+            // 定义图像配置：位置 -> (key, title)
+            const imageConfig = {
+              'structure': { key: 'structure', title: '三维结构图' },
+              'band_gap': { key: 'band_gap', title: '带隙图' },
+              'first_band': { key: 'first_band', title: '第一带隙本征模态图' },
+              'second_band': { key: 'second_band', title: '第二带隙本征模态图' }
+            };
+
+            // 按照指定顺序显示图像
+            ['structure', 'band_gap', 'first_band', 'second_band'].forEach(pos => {
+              const config = imageConfig[pos];
+              const imageData = files.images[config.key];
+
+              if (imageData) {
+                messageContent += `
+                          <div class="image-item">
+                            <div class="image-title">${config.title}</div>
+                            <img src="${imageData.data}" alt="${config.title}" class="file-image">
+                            <div class="image-info">${imageData.filename} (${formatBytes(imageData.size)})</div>
+                          </div>
+                        `;
+              } else {
+                messageContent += `
+                          <div class="image-item">
+                            <div class="image-title">${config.title}</div>
+                            <div style="height: 100px; display: flex; align-items: center; justify-content: center; color: #6c757d; font-size: 11px; background: #f8f9fa; border-radius: 4px;">
+                              暂无图像
+                            </div>
+                          </div>
+                        `;
+              }
+            });
+
+            messageContent += '</div>'; // 结束images-grid
+          }
+
+          // 文本文件内容已隐藏，只保留下载按钮
+
+          // STL文件内容已隐藏，只保留下载按钮
+
+          // 下载按钮
+          messageContent += '<div class="download-buttons">';
+          // 下载所有图像按钮
+          if (files.images) {
+            const imageList = [];
+            ['structure', 'band_gap', 'first_band', 'second_band'].forEach(pos => {
+              const imageData = files.images[pos];
+              if (imageData) {
+                imageList.push(imageData.filename);
+              }
+            });
+            if (imageList.length > 0) {
+              messageContent += `<button class="download-btn" onclick="downloadAllImages(${JSON.stringify(imageList).replace(/"/g, '&quot;')})">📥 下载图像</button>`;
+            }
+          }
+          if (files.text) {
+            messageContent += `<a href="/api/download/${files.text.filename}" class="download-btn" target="_blank">📥 下载数据</a>`;
+          }
+          if (files.stl) {
+            messageContent += `<a href="/api/download/${files.stl.filename}" class="download-btn" target="_blank">🔧 下载STL</a>`;
+          }
+          if (files.comsol) {
+            messageContent += `<a href="/api/download/${files.comsol.filename}" class="download-btn" target="_blank">🔬 Comsol模型</a>`;
+          }
+          messageContent += "</div>";
+          messageContent += "</div>";
+        }
+
+        messageDiv.innerHTML = messageContent;
+        chatMessages.appendChild(messageDiv);
+
+        // 滚动到底部
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function showTypingIndicator() {
+        const chatMessages = document.getElementById("chatDisplayMessages");
+        const typingDiv = document.createElement("div");
+        typingDiv.className = "typing-indicator";
+        typingDiv.id = "typingIndicator";
+        typingDiv.innerHTML = `
+                <div class="typing-dots">
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                    <div class="typing-dot"></div>
+                </div>
+            `;
+        chatMessages.appendChild(typingDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      function hideTypingIndicator() {
+        const typingIndicator = document.getElementById("typingIndicator");
+        if (typingIndicator) {
+          typingIndicator.remove();
+        }
+      }
+
+      function sendMessage() {
+        const chatInput = document.getElementById("chatInput");
+        const sendBtn = document.querySelector(".send-btn");
+        const message = chatInput.value.trim();
+
+        if (!message) {
+          return;
+        }
+
+        // 禁用发送按钮
+        sendBtn.disabled = true;
+        sendBtn.classList.add("loading");
+        sendBtn.innerHTML = '<span class="btn-icon">📤</span>发送中...';
+
+        // 显示用户消息
+        addChatMessage(message, "user");
+
+        // 清空输入框
+        chatInput.value = "";
+
+        // 显示正在输入指示器
+        showTypingIndicator();
+
+        // 发送到后端
+        fetch("/api/chat", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            message: message,
+          }),
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            // 隐藏正在输入指示器
+            hideTypingIndicator();
+
+            if (data.success) {
+              // 显示AI回复，包含文件数据（如果有的话）
+              // 只有当files不为null且has_files为true时才传递文件数据
+              const filesData =
+                data.files && data.files.has_files ? data.files : null;
+              addChatMessage(data.message, "assistant", filesData);
+
+              // 如果AI表示要结束对话，可以在这里添加特殊处理
+              if (data.should_exit) {
+                setTimeout(() => {
+                  if (confirm("对话即将结束，是否开始新对话？")) {
+                    startNewConversation();
+                  }
+                }, 1000);
+              }
+            } else {
+              // 显示错误消息
+              addChatMessage(data.message, "assistant");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            hideTypingIndicator();
+            addChatMessage(
+              "连接服务器时出现错误，请检查网络连接或重启程序。",
+              "assistant"
+            );
+          })
+          .finally(() => {
+            // 恢复发送按钮
+            sendBtn.disabled = false;
+            sendBtn.classList.remove("loading");
+            sendBtn.innerHTML = '<span class="btn-icon">📤</span>Send';
+          });
+      }
+
+      function startNewConversation() {
+        const resetBtn = document.querySelector(".reset-btn");
+
+        // 设置按钮为加载状态
+        resetBtn.disabled = true;
+        resetBtn.classList.add("loading");
+        resetBtn.innerHTML = '<span class="btn-icon">🔄</span>重置中...';
+
+        // 调用后端重置API
+        fetch("/api/reset", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            if (data.success) {
+              // 清除聊天显示区域
+              const chatMessages = document.getElementById(
+                "chatDisplayMessages"
+              );
+              chatMessages.innerHTML = `
+                        <div class="initial-message assistant-message">
+                            <div class="message-content">
+                                你好呀，我叫希音千寻，是一个声学超材料智能化设计助手，目前擅长声谷霍尔绝缘体的设计，
+                                你可以向我询问比如"请帮我设计一个声谷霍尔绝缘体，带隙范围为（811,1998）"。或者你可以与我讨论声学超材料有关的问题。
+                            </div>
+                        </div>
+                    `;
+
+              // 清空输入框
+              document.getElementById("chatInput").value = "";
+
+              // 显示成功消息
+              setTimeout(() => {
+                addChatMessage(
+                  "对话已重置，我们可以重新开始聊天了！",
+                  "assistant"
+                );
+              }, 500);
+            } else {
+              addChatMessage("重置对话时出现错误，请稍后重试。", "assistant");
+            }
+          })
+          .catch((error) => {
+            console.error("Error:", error);
+            addChatMessage("重置对话时出现网络错误，请检查连接。", "assistant");
+          })
+          .finally(() => {
+            // 恢复按钮状态
+            resetBtn.disabled = false;
+            resetBtn.classList.remove("loading");
+            resetBtn.innerHTML =
+              '<span class="btn-icon">🔄</span>Start a new conversation';
+          });
+      }
+
+      // 添加Enter键发送功能
+      function initializeChatInput() {
+        const chatInput = document.getElementById("chatInput");
+        if (chatInput) {
+          chatInput.addEventListener("keydown", function (e) {
+            if (e.key === "Enter" && !e.shiftKey) {
+              e.preventDefault();
+              sendMessage();
+            }
+          });
+        }
+      }
+
+      // 下载所有图像的函数
+      function downloadAllImages(imageList) {
+        if (!imageList || imageList.length === 0) {
+          alert('没有可下载的图像文件');
+          return;
+        }
+
+        // 依次打开下载链接
+        imageList.forEach(function(filename, index) {
+          setTimeout(function() {
+            const link = document.createElement('a');
+            link.href = '/api/download/' + filename;
+            link.download = filename;
+            link.target = '_blank';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+          }, index * 500); // 每个下载间隔500ms，避免浏览器阻止
+        });
+      }
+
+      // 页面加载时确保Home页面是活动状态
+      document.addEventListener("DOMContentLoaded", function () {
+        showPage("home");
+        // 无论如何都初始化Chat输入框功能，避免事件丢失
+        setTimeout(function () {
+          initializeChatInput();
+        }, 100);
+      });
+    </script>
+  </body>
+</html>
