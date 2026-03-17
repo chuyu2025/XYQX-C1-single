@@ -47,7 +47,7 @@ Open http://localhost:5000
 - GET /api/download/<filename>
 
 > Due to GitHub's storage limitations, the fine-tuned AVHI structural design large language model cannot be uploaded. To use the full version of the design function, please visit the following URL:
-> https://xyqx-c1.vip.cpolar.cn
+> https://xyqx-c1.cpolar.io/
 
 ## Repository Notes
 
