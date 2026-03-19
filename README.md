@@ -36,8 +36,6 @@ pip install -r requirements.txt
 python XYQX_C1_single.py
 ```
 
-Open http://localhost:5000
-
 ## Main Endpoints
 
 - POST /api/design
@@ -45,9 +43,6 @@ Open http://localhost:5000
 - POST /api/reset
 - GET /api/stats
 - GET /api/download/<filename>
-
-> Due to GitHub's storage limitations, the fine-tuned AVHI structural design large language model cannot be uploaded. To use the full version of the design function, please visit the following URL:
-> https://xyqx-c1.cpolar.io/
 
 ## Repository Notes
 
